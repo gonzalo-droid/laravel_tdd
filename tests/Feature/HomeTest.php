@@ -2,21 +2,34 @@
 
 namespace Tests\Feature;
 
-use Illuminate\Foundation\Testing\RefreshDatabase;
-use Illuminate\Foundation\Testing\WithFaker;
+use App\Models\Tag;
 use Tests\TestCase;
+use Illuminate\Foundation\Testing\WithFaker;
+use Illuminate\Foundation\Testing\RefreshDatabase;
 
 class HomeTest extends TestCase
 {
-    /**
-     * A basic feature test example.
-     *
-     * @return void
-     */
-    public function test_example()
-    {
-        $response = $this->get('/');
+    use RefreshDatabase;
 
-        $response->assertStatus(200);
+
+    public function test_empty() {
+
+        $this
+            ->get("/")
+            ->assertStatus(200)
+            ->assertSee("No hay etiquetas");
+
+    }
+
+    public function test_with_data() {
+
+        $tag = Tag::factory()->create();
+
+        $this
+            ->get("/")
+            ->assertStatus(200)
+            ->assertSee($tag->name)
+            ->assertDontSee("No hay etiquetas");
+
     }
 }
