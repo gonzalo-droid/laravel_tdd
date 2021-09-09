@@ -25,6 +25,11 @@ class HomeTest extends TestCase
 
         $tag = Tag::factory()->create();
 
+        /*
+        Antes de los otros assert, se puede agregar un assert para revisar que el name del tag no sea vacío. Así no arroja verde cuando debería arrojar por ser nulo:
+        */
+        $this->assertNotEmpty($tag->name);
+
         $this
             ->get("/")
             ->assertStatus(200)
